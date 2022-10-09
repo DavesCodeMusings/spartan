@@ -1,0 +1,131 @@
+/**
+ * Stylesheet for a typical left-side navigation site like the example layout shown below.
+ * -- Header --
+ *  M   Content
+ *  e   Goes
+ *  n   Here
+ *  u
+ * -- Footer --
+ *
+ * Available properties are shown below with their default values.
+ *   --spartan-pen: black;
+ *   --spartan-paper: white;
+ *   --spartan-header-pen: #FFFFFFC0;
+ *   --spartan-header-paper: #000000C0;
+ *   --spartan-header-height: 2rem;
+ *   --spartan-menu-pen: #FFFFFFA0;
+ *   --spartan-menu-paper: #000000A0;
+ *   --spartan-menu-width: 15vw;
+ *   --spartan-content-pen: var(--spartan-pen);
+ *   --spartan-content-paper: var(--spartan-paper);
+ *   --spartan-footer-pen: #FFFFFFC0;
+ *   --spartan-footer-paper: #000000C0;
+ *   --spartan-footer-height: 1rem;
+ */
+
+:root {
+  --spartan-pen: black;
+  --spartan-paper: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --spartan-pen: whitesmoke;
+    --spartan-paper: indigo;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;  /* Remove browser default values for better consistency. */
+}
+
+*[onclick] {
+  cursor: pointer;
+}
+
+html {
+  font-family: sans-serif;
+  font-size: calc(11px + 0.5vw);  /* Maintain a minimum size but grow to fit wider screens. On a 1080p screen it's 11px + 0.5 x 1080 / 100, or 16.4px */
+}
+
+body {
+  background-color: var(--spartan-paper);
+  color: var(--spartan-pen);
+  height: 100vh;
+  width: 100vw;
+}
+
+header {
+  background-color: var(--spartan-header-paper, #000000C0);
+  color: var(--spartan-header-pen, #FFFFFFC0);
+  font-size: calc(0.85 * var(--spartan-header-height, 2rem));  /* Ensure text fits without looking too crowded. */
+  font-variant: small-caps;
+  height: var(--spartan-header-height, 2rem);
+}
+
+header > h1 {
+  font-size: inherit;  /* Block browser default to avoid double-size. */
+}
+
+nav {
+  background-color: var(--spartan-menu-paper, #000000A0);
+  color: var(--spartan-menu-pen, #FFFFFFA0);
+  float: left;
+  height: calc(100vh - var(--spartan-header-height, 2rem) - var(--spartan-footer-height, 1em));
+  width: var(--spartan-menu-width, 15vw);
+}
+
+nav a {
+  color: inherit;  /* Use text color instead of blue for links. */
+  display: block;
+  text-decoration: none;
+}
+
+nav > a, nav > details > summary, nav > details > a {
+  border-left: 0.2em solid transparent;  /* Reserve space for selection indicator. */
+  padding: 0.4em;
+}
+
+nav a.selected {
+  background: #FFFFFF30;
+  color: #FFFFFFC0;
+  border-left: 0.2em solid currentColor;  /* same size as solid transparent border-left above */
+}
+
+nav > a:hover, nav > details > summary:hover, nav > details > a:hover {
+  background: #FFFFFF60;
+}
+
+nav summary {
+  list-style: none;
+}
+
+nav summary:after {
+  content: " \025B8";  /* Unicode small right-pointing triangle */
+}
+
+nav details[open] summary:after {
+  content: " \025BE";  /* Unicode small down-pointing triangle */
+}
+
+main {
+  background-color: var(--spartan-content-paper, var(--paper));
+  color: var(--spartan-content-pen, var(--pen));
+  float: left;
+  height: calc(100vh - var(--spartan-header-height, 2rem) - var(--spartan-footer-height, 1em));
+  width: calc(100vw - var(--spartan-menu-width, 15vw));
+  padding: 0.2em;
+}
+
+footer {
+  background-color: var(--spartan-footer-paper, #000000C0);
+  color: var(--spartan-footer-pen, #FFFFFFC0);
+  bottom: 0;
+  font-size: calc(0.85 * var(--spartan-footer-height, 1rem));  /* Ensure text fits without looking too crowded. */
+  height: var(--spartan-footer-height, 1rem);
+  position: fixed;
+  text-align: center;
+  width: 100%;
+}
