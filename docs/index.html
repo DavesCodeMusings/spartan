@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Spartan Menu Test</title>
+  <link rel="stylesheet" type="text/css" href="spartan.css">
+  <link rel="stylesheet" type="text/css" href="local.css">
+  <script type="module">
+    import * as spartan from './spartan.js'
+    window.addEventListener('hashchange', spartan.selectMenuItemByHash)
+    window.addEventListener('hashchange', spartan.navigateToHash)
+    window.addEventListener('load', spartan.selectMenuItemByHash)
+    window.addEventListener('load', spartan.navigateToHash)
+    document.getElementById('menu').addEventListener('click', spartan.collapseSiblingDetails)
+  </script>
+  <script src="local.js"></script>
+</head>
+
+<body>
+  <header>
+    <h1>
+      <svg style="height: 1em; width: 1em; vertical-align: middle;" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+      </svg>
+      Spartan
+    </h1>
+  </header>
+
+  <nav id="menu">
+    <a href="#home">Home</a>
+    <details>
+      <summary>File</summary>
+      <a href="#file-new">New</a>
+      <a href="#file-open">Open</a>
+      <a href="#file-save">Save</a>
+    </details>
+    <details>
+      <summary>Edit</summary>
+      <a href="#edit-copy">Copy</a>
+      <a href="#edit-paste">Paste</a>
+    </details>
+    <details>
+      <summary>View</summary>
+      <a href="#view-refresh">Refresh</a>
+      <a href="#view-clear">Clear</a>
+    </details>
+  </nav>
+
+  <main id="content">
+    <p>Hello World!</p>
+  </main>
+
+  <footer>
+    <p>We don't use cookies, but if we did they'd be chocolate chip.</p>
+  </footer>
+
+</body>
+
+</html>
