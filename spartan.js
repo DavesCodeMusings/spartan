@@ -108,4 +108,14 @@ async function navigateToHash() {
 }
 
 
-export {collapseSiblingDetails, selectMenuItemByHash, navigateToHash}
+function toggleMenu() {
+  let menuElement = document.getElementsByTagName('nav').namedItem('menu') || document.getElementsByTagName('nav')[0]
+  if (menuElement.style.display == 'none') {
+    menuElement.style.display = 'block'
+  }
+  else {
+    menuElement.style.display = 'none'
+  }
+}
+
+export {collapseSiblingDetails, selectMenuItemByHash, navigateToHash, toggleMenu}
