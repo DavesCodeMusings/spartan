@@ -47,7 +47,13 @@
 
 html {
   font-family: sans-serif;
-  font-size: calc(11px + 0.5vw);  /* Maintain a minimum size but grow to fit wider screens. On a 1080p screen it's 11px + 0.5 x 1080 / 100, or 16.4px */
+  font-size: calc(11px + 2.5vw);  /* Maintain a minimum size but grow to fit wider screens. On a 360px wide portrait mode mobile screen it's 11px + 2.5 x 360 / 100, or 20px */
+}
+
+@media screen and (min-aspect-ratio: 1/1) {
+  html {
+    font-size: calc(11px + 0.5vw);  /* Maintain a minimum size but grow to fit wider screens. On a 16x9 1080p landscape screen it's 11px + 0.5 x 1920 / 100, or 20.6px */
+  }
 }
 
 body {
@@ -72,9 +78,16 @@ header > h1 {
 nav {
   background-color: var(--spartan-menu-paper, #000000A0);
   color: var(--spartan-menu-pen, #FFFFFFA0);
-  float: left;
-  height: calc(100vh - var(--spartan-header-height, 2rem) - var(--spartan-footer-height, 1em));
-  width: var(--spartan-menu-width, 15vw);
+  width: 100%;  /* Portrait mode design stacks navigation on top of main content. */
+}
+
+@media screen and (min-aspect-ratio: 1/1) {
+  nav {
+    display: block;  /* Show navigation menu by default on landscape mode screens. */
+    float: left;
+    height: calc(100vh - var(--spartan-header-height, 2rem) - var(--spartan-footer-height, 1em));
+    width: var(--spartan-menu-width, 15vw);
+  }
 }
 
 nav a {
@@ -113,10 +126,16 @@ nav details[open] summary:after {
 main {
   background-color: var(--spartan-content-paper, var(--paper));
   color: var(--spartan-content-pen, var(--pen));
-  float: left;
-  height: calc(100vh - var(--spartan-header-height, 2rem) - var(--spartan-footer-height, 1em));
-  width: calc(100vw - var(--spartan-menu-width, 15vw));
   padding: 0.2em;
+  width: 100%;  /* Portrait mode design stacks navigation on top of main content. */
+}
+
+@media screen and (min-aspect-ratio: 1/1) {
+  main {
+    float: left;  /* Landscape mode is side by side. */
+    height: calc(100vh - var(--spartan-header-height, 2rem) - var(--spartan-footer-height, 1em));
+    width: calc(100vw - var(--spartan-menu-width, 15vw));
+  }
 }
 
 footer {
