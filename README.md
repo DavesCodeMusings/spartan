@@ -9,7 +9,7 @@ Spartan lets you create a single page web app with left-side accordian menu navi
 # Why should I care?
 There's plenty of libraries and frameworks to choose from for front-end web development. I wanted something simple built using vanilla HTML5, JavaScript and CSS. I wanted to get a decent looking site without a lot of parameter tweaking. That's how Spartan got started.
 
-Spartan is also very small (around 8K in size.) Recently, I've been running it on an ESP8266 microcontroller (80MHz CPU with about 40K of usable RAM and 4M of flash) just to prove it can be done.
+Spartan is also very small (around 10K in size.) Recently, I've been running it on an ESP8266 microcontroller (80MHz CPU with about 40K of usable RAM and 4M of flash) just to prove it can be done.
 
 If any of this sounds interesting, maybe give Spartan a try.
 
