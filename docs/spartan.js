@@ -1,9 +1,10 @@
+let spartanMenuId = 'menu'            // Do not edit default values.
+let spartanMenuToggleId = 'menu-btn'  // Use spartan.run(menuId, menuBtn) to override.
+let routes = {}
+
 /**
  * Remove the "open" attribute from all details elements under the same parent, except for the one that generated the click event.
  * Use with accordian-style menu navigation to auto-close unused sub-menus.
- * Example:
- *   import * as spartan from './spartan.js'
- *   document.getElementById('menu').addEventListener('click', spartan.collapseSiblingDetails)
  */
 function collapseSiblingDetails(event) {
   let selectedElement = event.srcElement
@@ -25,10 +26,6 @@ function collapseSiblingDetails(event) {
 /**
  * Apply the "selected" class to any <a> element under <nav id="menu"> that has an href matching window.location.hash.
  * Use with "hashchange" and "load" events to visually indicate the selected menu item when a link is followed or entered into the address bar.
- * Example:
- *   import * as spartan from './spartan.js'
- *   window.addEventListener('hashchange', spartan.selectMenuItemByHash)
- *   window.addEventListener('load', spartan.selectMenuItemByHash)
  */
 function selectMenuItemByHash() {
   let menuElement = document.getElementsByTagName('nav').namedItem('menu') || document.getElementsByTagName('nav')[0]
@@ -71,43 +68,8 @@ function selectMenuItemByHash() {
 
 
 /**
- * Execute a function or load content based on the value of window.location.hash.
- * For example, given window.location.hash = #foo
- *   Look for a script named foo() and execute it.
- *   If there is no foo() script, try to load foo.html and display its contents under <main id="content">.
- *   If there is no foo.html, display an error message in <main id="content">.
+ * Alternatively show or hide navigation menu based on its current display state.
  */
-async function navigateToHash() {
-  let hash = window.location.hash
-  if (!hash) {
-    return false
-  }
-
-  if (hash.charAt(0) == '#') {
-    hash = hash.substring(1)
-  }
-  console.debug(`Navigating to: ${hash}`)
-
-  if (typeof window[hash] === 'function') {
-    console.debug(`Executing function: ${hash}()`)
-    window[hash]()
-  }
-  else {
-    let baseURL = window.location.href.substring(0, window.location.href.lastIndexOf('/'))  // Chop '/filename.html#hash' (or just plain '/#hash') off the end.
-    console.debug(`Fetching content: ${baseURL}/${hash}.html`)
-    let contentPromise = await fetch(`${baseURL}/${hash}.html`)
-    console.debug(`Server response OK? ${contentPromise.ok}`)
-    let contentElement = document.getElementById('content') || document.getElementsByTagName('main')[0]  // Fallback to first <main> if no <main id="content"> exists.
-    if (contentPromise.ok) {
-      contentElement.innerHTML = await contentPromise.text()
-    }
-    else {
-      contentElement.innerHTML = `<p>Requested content does not exist.</p>`
-    }
-  }
-}
-
-
 function toggleMenu() {
   let menuElement = document.getElementsByTagName('nav').namedItem('menu') || document.getElementsByTagName('nav')[0]
   if (menuElement.style.display == 'none') {
@@ -118,4 +80,68 @@ function toggleMenu() {
   }
 }
 
-export {collapseSiblingDetails, selectMenuItemByHash, navigateToHash, toggleMenu}
+
+/**
+ * Register a route linking a URL hash to a function.
+ */
+ function route(hash, target) {
+  if (typeof target === 'function') {
+    routes[hash] = target
+  }
+  else {
+    throw('Route target is not a function')
+  }
+}
+
+
+/**
+ * Execute a function in the route table based on the value of window.location.hash.
+ * 
+ */
+ async function resolveRouteByHash() {
+  let hash = window.location.hash
+  if (!hash) {
+    return false
+  }
+
+  if (hash.charAt(0) == '#') {
+    hash = hash.substring(1)
+  }
+  console.debug(`Executing function for: ${hash}`)
+
+  if (typeof routes[hash] === 'function') {
+    console.debug(`Executing function: ${hash}()`)
+    routes[hash]()
+  }
+  else {
+    console.error(`Function does not exist in route table: ${hash}`)
+  }
+}
+
+
+/**
+ * Add event listeners for menu interaction.
+ * @param {string} menuId  id of HTML nav element being used as the accordian menu.
+ * @param {string} menuToggleId  id of HTML element used to show/hide the accordian menu.
+ */
+ function run(menuId='menu', menuToggleId='menu-toggle') {
+  if (menuId) {
+    spartanMenuId = menuId
+  }
+  if (menuToggleId) {
+    spartanMenuToggleId = menuToggleId
+  }
+  window.addEventListener('hashchange', selectMenuItemByHash)
+  window.addEventListener('hashchange', resolveRouteByHash)
+  window.addEventListener('load', selectMenuItemByHash)
+  window.addEventListener('load', resolveRouteByHash)
+  if (document.getElementById(menuId)) {
+    document.getElementById(menuId).addEventListener('click', collapseSiblingDetails)
+  }
+  if (document.getElementById(menuToggleId)) {
+    document.getElementById(menuToggleId).addEventListener('click', toggleMenu)
+  }
+}
+
+
+export {collapseSiblingDetails, selectMenuItemByHash, resolveRouteByHash, toggleMenu, route, run}

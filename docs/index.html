@@ -8,14 +8,27 @@
   <link rel="stylesheet" type="text/css" href="local.css">
   <script type="module">
     import * as spartan from './spartan.js'
-    window.addEventListener('hashchange', spartan.selectMenuItemByHash)
-    window.addEventListener('hashchange', spartan.navigateToHash)
-    window.addEventListener('load', spartan.selectMenuItemByHash)
-    window.addEventListener('load', spartan.navigateToHash)
-    document.getElementById('menu').addEventListener('click', spartan.collapseSiblingDetails)
-    document.getElementById('menu-btn').addEventListener('click', spartan.toggleMenu)
+
+    spartan.route('temperature', async () => {
+      /*
+        This is where you would insert fetch() to call your API.
+           let response = await fetch('/temperature');
+           let temperature = await response.text();
+        But for purposes of the demo, temperature is hardcoded.
+      */
+      let temperature = 32
+      document.getElementById('content').innerHTML = `Temperature is: ${temperature}&deg;`
+    })
+
+    spartan.route('humidity', async () => {
+      // Again, value is hardcoded for demo purposes.
+      let humidity = 57
+      document.getElementById('content').innerHTML = `Humidity is: ${humidity}%`
+    })
+
+    spartan.run()
   </script>
-  <script src="local.js"></script>
+
 </head>
 
 <body>
@@ -31,18 +44,9 @@
   <nav id="menu">
     <a href="/">Home</a>
     <details>
-      <summary>ADC</summary>
-      <a href="#adc0">adc0</a>
-    </details>
-    <details>
       <summary>DHT22</summary>
       <a href="#temperature">Temperature</a>
       <a href="#humidity">Humidity</a>
-    </details>
-    <details>
-      <summary>GPIO</summary>
-      <a href="#gpio2">GPIO 2</a>
-      <a href="#gpio14">GPIO 14</a>
     </details>
   </nav>
 
