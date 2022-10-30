@@ -16,9 +16,5 @@ If any of this sounds interesting, maybe give Spartan a try.
 # How do I use it?
 Take a look at the HTML source of the demo to see how the spartan.js module and spartan.css stylesheet can be included in the HTML alongside your own content and JavaScript functions.
 
-To keep Spartan simple, there is no table of function routes. The hash name determines the function name or the HTML file name. For example, if the hash is #home, a function named home() will be run. If there's no function with that name, Spartan attempts to load home.html. If that does nto exist, an error message is shown.
-
-See the demo page for concrete examples.
-
 # What browsers are supported?
 Since Spartan uses vanilla HTML5, JavaScript, and CSS, any modern standards-compliant browser should work. However, as a development team of one, I don't test anything beyond Firefox and Microsoft Edge.
