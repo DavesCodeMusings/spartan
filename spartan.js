@@ -1,5 +1,6 @@
 let spartanMenuId = 'menu'            // Do not edit default values.
 let spartanMenuToggleId = 'menu-btn'  // Use spartan.run(menuId, menuBtn) to override.
+let routes = {}
 
 /**
  * Remove the "open" attribute from all details elements under the same parent, except for the one that generated the click event.
@@ -67,44 +68,6 @@ function selectMenuItemByHash() {
 
 
 /**
- * Execute a function or load content based on the value of window.location.hash.
- * For example, given window.location.hash = #foo
- *   Look for a script named foo() and execute it.
- *   If there is no foo() script, try to load foo.html and display its contents under <main id="content">.
- *   If there is no foo.html, display an error message in <main id="content">.
- */
-async function navigateToHash() {
-  let hash = window.location.hash
-  if (!hash) {
-    return false
-  }
-
-  if (hash.charAt(0) == '#') {
-    hash = hash.substring(1)
-  }
-  console.debug(`Navigating to: ${hash}`)
-
-  if (typeof window[hash] === 'function') {
-    console.debug(`Executing function: ${hash}()`)
-    window[hash]()
-  }
-  else {
-    let baseURL = window.location.href.substring(0, window.location.href.lastIndexOf('/'))  // Chop '/filename.html#hash' (or just plain '/#hash') off the end.
-    console.debug(`Fetching content: ${baseURL}/${hash}.html`)
-    let contentPromise = await fetch(`${baseURL}/${hash}.html`)
-    console.debug(`Server response OK? ${contentPromise.ok}`)
-    let contentElement = document.getElementById('content') || document.getElementsByTagName('main')[0]  // Fallback to first <main> if no <main id="content"> exists.
-    if (contentPromise.ok) {
-      contentElement.innerHTML = await contentPromise.text()
-    }
-    else {
-      contentElement.innerHTML = `<p>Requested content does not exist.</p>`
-    }
-  }
-}
-
-
-/**
  * Alternatively show or hide navigation menu based on its current display state.
  */
 function toggleMenu() {
@@ -114,6 +77,44 @@ function toggleMenu() {
   }
   else {
     menuElement.style.display = 'none'
+  }
+}
+
+
+/**
+ * Register a route linking a URL hash to a function.
+ */
+ function route(hash, target) {
+  if (typeof target === 'function') {
+    routes[hash] = target
+  }
+  else {
+    throw('Route target is not a function')
+  }
+}
+
+
+/**
+ * Execute a function in the route table based on the value of window.location.hash.
+ * 
+ */
+ async function resolveRouteByHash() {
+  let hash = window.location.hash
+  if (!hash) {
+    return false
+  }
+
+  if (hash.charAt(0) == '#') {
+    hash = hash.substring(1)
+  }
+  console.debug(`Executing function for: ${hash}`)
+
+  if (typeof routes[hash] === 'function') {
+    console.debug(`Executing function: ${hash}()`)
+    routes[hash]()
+  }
+  else {
+    console.error(`Function does not exist in route table: ${hash}`)
   }
 }
 
@@ -131,9 +132,9 @@ function toggleMenu() {
     spartanMenuToggleId = menuToggleId
   }
   window.addEventListener('hashchange', selectMenuItemByHash)
-  window.addEventListener('hashchange', navigateToHash)
+  window.addEventListener('hashchange', resolveRouteByHash)
   window.addEventListener('load', selectMenuItemByHash)
-  window.addEventListener('load', navigateToHash)
+  window.addEventListener('load', resolveRouteByHash)
   if (document.getElementById(menuId)) {
     document.getElementById(menuId).addEventListener('click', collapseSiblingDetails)
   }
@@ -143,4 +144,4 @@ function toggleMenu() {
 }
 
 
-export {collapseSiblingDetails, selectMenuItemByHash, navigateToHash, toggleMenu, run}
+export {collapseSiblingDetails, selectMenuItemByHash, resolveRouteByHash, toggleMenu, route, run}
