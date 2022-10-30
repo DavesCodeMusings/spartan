@@ -1,9 +1,9 @@
+let spartanMenuId = 'menu'            // Do not edit default values.
+let spartanMenuToggleId = 'menu-btn'  // Use spartan.run(menuId, menuBtn) to override.
+
 /**
  * Remove the "open" attribute from all details elements under the same parent, except for the one that generated the click event.
  * Use with accordian-style menu navigation to auto-close unused sub-menus.
- * Example:
- *   import * as spartan from './spartan.js'
- *   document.getElementById('menu').addEventListener('click', spartan.collapseSiblingDetails)
  */
 function collapseSiblingDetails(event) {
   let selectedElement = event.srcElement
@@ -25,10 +25,6 @@ function collapseSiblingDetails(event) {
 /**
  * Apply the "selected" class to any <a> element under <nav id="menu"> that has an href matching window.location.hash.
  * Use with "hashchange" and "load" events to visually indicate the selected menu item when a link is followed or entered into the address bar.
- * Example:
- *   import * as spartan from './spartan.js'
- *   window.addEventListener('hashchange', spartan.selectMenuItemByHash)
- *   window.addEventListener('load', spartan.selectMenuItemByHash)
  */
 function selectMenuItemByHash() {
   let menuElement = document.getElementsByTagName('nav').namedItem('menu') || document.getElementsByTagName('nav')[0]
@@ -108,6 +104,9 @@ async function navigateToHash() {
 }
 
 
+/**
+ * Alternatively show or hide navigation menu based on its current display state.
+ */
 function toggleMenu() {
   let menuElement = document.getElementsByTagName('nav').namedItem('menu') || document.getElementsByTagName('nav')[0]
   if (menuElement.style.display == 'none') {
@@ -118,4 +117,30 @@ function toggleMenu() {
   }
 }
 
-export {collapseSiblingDetails, selectMenuItemByHash, navigateToHash, toggleMenu}
+
+/**
+ * Add event listeners for menu interaction.
+ * @param {string} menuId  id of HTML nav element being used as the accordian menu.
+ * @param {string} menuToggleId  id of HTML element used to show/hide the accordian menu.
+ */
+ function run(menuId='menu', menuToggleId='menu-toggle') {
+  if (menuId) {
+    spartanMenuId = menuId
+  }
+  if (menuToggleId) {
+    spartanMenuToggleId = menuToggleId
+  }
+  window.addEventListener('hashchange', selectMenuItemByHash)
+  window.addEventListener('hashchange', navigateToHash)
+  window.addEventListener('load', selectMenuItemByHash)
+  window.addEventListener('load', navigateToHash)
+  if (document.getElementById(menuId)) {
+    document.getElementById(menuId).addEventListener('click', collapseSiblingDetails)
+  }
+  if (document.getElementById(menuToggleId)) {
+    document.getElementById(menuToggleId).addEventListener('click', toggleMenu)
+  }
+}
+
+
+export {collapseSiblingDetails, selectMenuItemByHash, navigateToHash, toggleMenu, run}
