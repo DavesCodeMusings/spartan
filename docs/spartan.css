@@ -101,6 +101,10 @@ nav > a, nav > details > summary, nav > details > a {
   padding: 0.4em;
 }
 
+nav > details > a {
+  padding-left: 1em;
+}
+
 nav a.selected {
   background: #FFFFFF30;
   color: #FFFFFFC0;

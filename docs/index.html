@@ -26,6 +26,12 @@
       document.getElementById('content').innerHTML = `Humidity is: ${humidity}%`
     })
 
+    spartan.route('gpio2', async () => {
+      /* Hardcoded for demo */
+      let ledState = 'ON'
+      document.getElementById('content').innerHTML = `Built-In LED is: ${ledState}`
+    })
+
     spartan.run()
   </script>
 
@@ -47,6 +53,10 @@
       <summary>DHT22</summary>
       <a href="#temperature">Temperature</a>
       <a href="#humidity">Humidity</a>
+    </details>
+    <details>
+      <summary>GPIO</summary>
+      <a href="#gpio2">Built-In LED</a>
     </details>
   </nav>
 
