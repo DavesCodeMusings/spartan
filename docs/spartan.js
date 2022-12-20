@@ -123,8 +123,9 @@ function toggleMenu() {
  * Add event listeners for menu interaction.
  * @param {string} menuId  id of HTML nav element being used as the accordian menu.
  * @param {string} menuToggleId  id of HTML element used to show/hide the accordian menu.
+ * @param {boolean} autoCloseSiblings  if true, close other menu details when opening new.
  */
- function run(menuId='menu', menuToggleId='menu-toggle') {
+ function run(menuId='menu', menuToggleId='menu-btn', autoCloseSiblings=false) {
   if (menuId) {
     spartanMenuId = menuId
   }
@@ -135,7 +136,7 @@ function toggleMenu() {
   window.addEventListener('hashchange', resolveRouteByHash)
   window.addEventListener('load', selectMenuItemByHash)
   window.addEventListener('load', resolveRouteByHash)
-  if (document.getElementById(menuId)) {
+  if (document.getElementById(menuId) && autoCloseSiblings) {
     document.getElementById(menuId).addEventListener('click', collapseSiblingDetails)
   }
   if (document.getElementById(menuToggleId)) {
