@@ -15,7 +15,7 @@
  *   --spartan-header-height: 2rem;
  *   --spartan-menu-pen: #FFFFFFA0;
  *   --spartan-menu-paper: #000000A0;
- *   --spartan-menu-width: 15em;
+ *   --spartan-menu-width: 15rem;
  *   --spartan-content-pen: var(--spartan-pen);
  *   --spartan-content-paper: var(--spartan-paper);
  *   --spartan-footer-pen: #FFFFFFC0;
@@ -86,7 +86,7 @@ nav {
     display: block;  /* Show navigation menu by default on landscape mode screens. */
     float: left;
     height: calc(100vh - var(--spartan-header-height, 2rem) - var(--spartan-footer-height, 1em));
-    width: var(--spartan-menu-width, 15em);
+    width: var(--spartan-menu-width, 15rem);
   }
 }
 
@@ -138,7 +138,7 @@ main {
   main {
     float: left;  /* Landscape mode is side by side. */
     height: calc(100vh - var(--spartan-header-height, 2rem) - var(--spartan-footer-height, 1em));
-    width: calc(100vw - var(--spartan-menu-width, 15em));
+    width: calc(100vw - var(--spartan-menu-width, 15rem));
   }
 }
 
