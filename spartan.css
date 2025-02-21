@@ -23,7 +23,7 @@
  *   --spartan-footer-height: 1rem;
  */
 
-:root {
+ :root {
   --spartan-pen: black;
   --spartan-paper: white;
 }
@@ -115,8 +115,13 @@ nav > a:hover, nav > details > summary:hover, nav > details > a:hover {
   background: #FFFFFF60;
 }
 
-nav summary {
+nav details summary {
   list-style: none;
+  transition: margin 250ms ease-out;
+}
+
+nav details[open] summary {
+  margin-bottom: 0.2em;
 }
 
 nav summary:after {
